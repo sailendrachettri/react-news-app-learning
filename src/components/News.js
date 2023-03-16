@@ -26,47 +26,33 @@ export class News extends Component {
         }
     }
 
-    async componentDidMount() {
+    async updateNews() {
+        const url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=3104946bd90a4c738d1a1e4d7dc35012&page=${this.state.page}&pageSize=${this.props.pageSize}`;
+
         this.setState({ loading: true })
-        let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=3104946bd90a4c738d1a1e4d7dc35012&page=1&pageSize=${this.props.pageSize}`;
         let data = await fetch(url);
         let parsedData = await data.json();
-        this.setState({ articles: parsedData.articles, totalResults: parsedData.totalResults, loading: false });
+
+        this.setState({
+            articles: parsedData.articles,
+            totalResults: parsedData.totalResults,
+            loading: false
+        })
+    }
+
+    async componentDidMount() {
+        this.updateNews()
     }
 
     goToNextPage = async () => {
-        if (!(this.state.page + 1 > Math.ceil(this.state.totalResults / this.props.pageSize))) {
-            this.setState({ loading: true })
-
-            let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=3104946bd90a4c738d1a1e4d7dc35012&page=${this.state.page + 1}&pageSize=${this.props.pageSize}`;
-            let data = await fetch(url);
-            let parsedData = await data.json();
-
-            this.setState({ loading: false })
-
-            this.setState({
-                page: this.state.page + 1,
-                articles: parsedData.articles,
-                loading: false
-            })
-        }
+        this.setState({ page: this.state.page + 1 })
+        this.updateNews()
+        console.log(this.state.articles);
     }
 
     goToPreviousPage = async () => {
-        this.setState({ loading: true })
-
-        let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=3104946bd90a4c738d1a1e4d7dc35012&page=${this.state.page - 1}&pageSize=${this.props.pageSize}`;
-        let data = await fetch(url);
-        let parsedData = await data.json();
-
-        this.setState({ loading: false })
-
-        this.setState({
-            page: this.state.page - 1,
-            articles: parsedData.articles,
-            loading: false
-        })
-
+        this.setState({ page: this.state.page - 1 })
+        this.updateNews()
     }
 
     render() {
@@ -79,7 +65,7 @@ export class News extends Component {
                         {
                             (!this.state.loading) && this.state.articles.map((element) => {
                                 return <div div className="col-md-4" key={element.imageUrl}>
-                                    <NewsItem title={element.title ? element.title.slice(0, 45) : "Not available"} description={element.description ? element.description.slice(0, 88) : "Not available"} imageUrl={!element.urlToImage ? "https://thumbs.dreamstime.com/b/news-newspapers-folded-stacked-word-wooden-block-puzzle-dice-concept-newspaper-media-press-release-42301371.jpg" : element.urlToImage} newsUrl={element.url} />
+                                    <NewsItem title={element.title ? element.title.slice(0, 45) : "Not available"} description={element.description ? element.description.slice(0, 88) : "Not available"} imageUrl={!element.urlToImage ? "https://thumbs.dreamstime.com/b/news-newspapers-folded-stacked-word-wooden-block-puzzle-dice-concept-newspaper-media-press-release-42301371.jpg" : element.urlToImage} newsUrl={element.url} author={element.author} date={element.publishedAt} />
                                 </div>
                             })
                         }
