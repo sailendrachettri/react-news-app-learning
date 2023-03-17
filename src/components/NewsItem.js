@@ -7,10 +7,10 @@ export class NewsItem extends Component {
             <>
                 <div className="card my-2">
                     <img src={imageUrl} className="card-img-top" alt="..." />
-                    <div className="card-body">
-                        <h5 className="card-title">{title}{title.length < 45 ? "" : "..."}</h5>
+                    <div className="card-body fontSensSerif">
+                        <h5 className="card-title fontBold">{title}{title.length < 45 ? "" : "..."}</h5>
                         <p className="card-text">{description}{title.length < 88 ? "" : "..."}</p>
-                        <p className="card-text"><small className="card-muted">By {author ? author : "Unknown"} at {new Date(date).toGMTString()}</small></p>
+                        <p className="card-text" style={{}}><small className="card-muted">By {author ? author : "Unknown"} at {new Date(date).toGMTString()}</small></p>
                         <a href={newsUrl} target="_blank" rel='noreferrer' className="btn btn-sm btn-dark">Readmore..</a>
                     </div>
                 </div>

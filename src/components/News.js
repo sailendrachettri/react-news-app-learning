@@ -16,14 +16,19 @@ export class News extends Component {
         category: PropTypes.string
     }
 
+    captializeFirstLetter = (string) => {
+        return string.charAt(0).toUpperCase() + string.slice(1);
+    }
 
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
+
         this.state = {
             articles: [],
             page: 1,
             loading: false
         }
+        document.title = `${this.props.category === 'general' ? "News Monkey - get the latest news for free" : this.captializeFirstLetter(this.props.category)} latest news - NewsMonkey`
     }
 
     async updateNews() {
@@ -59,7 +64,7 @@ export class News extends Component {
         return (
             <>
                 <div className="container my-3">
-                    <h2 className='my-3'>Top Headlines - newsMonkey</h2>
+                    <h2 className='my-3 fontSensSerif'> NewsMonkey - Top {this.captializeFirstLetter(this.props.category)} headlines </h2>
                     {this.state.loading && <Spinner />}
                     <div className="row">
                         {
