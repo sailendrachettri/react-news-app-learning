@@ -5,3 +5,12 @@
 .fontSensSerif {
     font-family: sans-serif;
 }
+
+/* news source badge */
+.newsSourceBadge {
+    display: flex;
+    position: absolute;
+    justify-content: flex-end;
+    right: 0;
+    padding: 0;
+}

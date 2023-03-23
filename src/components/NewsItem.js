@@ -2,10 +2,15 @@ import React, { Component } from 'react'
 
 export class NewsItem extends Component {
     render() {
-        let { title, description, imageUrl, newsUrl, author, date } = this.props
+        let { title, description, imageUrl, newsUrl, author, date, newsSource } = this.props
         return (
             <>
                 <div className="card my-2">
+
+                    <div className="container newsSourceBadge">
+                        <span className="badge bg-success"> {newsSource} </span>
+                    </div>
+
                     <img src={imageUrl} className="card-img-top" alt="..." />
                     <div className="card-body fontSensSerif">
                         <h5 className="card-title fontBold">{title}{title.length < 45 ? "" : "..."}</h5>

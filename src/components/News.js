@@ -5,6 +5,7 @@ import PropTypes from 'prop-types'
 import InfiniteScroll from 'react-infinite-scroll-component';
 
 export class News extends Component {
+    defaultImage = "https://thumbs.dreamstime.com/b/news-newspapers-folded-stacked-word-wooden-block-puzzle-dice-concept-newspaper-media-press-release-42301371.jpg"
     static defaultProps = {
         country: "in",
         pageSize: 6,
@@ -34,17 +35,21 @@ export class News extends Component {
     }
 
     async updateNews() {
+        this.props.setProgress(24)
         const url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=3104946bd90a4c738d1a1e4d7dc35012&page=${this.state.page}&pageSize=${this.props.pageSize}`;
 
         this.setState({ loading: true })
-        let data = await fetch(url);
-        let parsedData = await data.json();
+        let data = await fetch(url)
+        this.props.setProgress(57)
+        let parsedData = await data.json()
+        this.props.setProgress(77)
 
         this.setState({
             articles: parsedData.articles,
             totalResults: parsedData.totalResults,
             loading: false
         })
+        this.props.setProgress(100)
     }
 
     async componentDidMount() {
@@ -79,8 +84,8 @@ export class News extends Component {
                             <div className="row">
                                 {
                                     this.state.articles.map((element) => {
-                                        return <div div className="col-md-4" key={element.imageUrl}>
-                                            <NewsItem title={element.title ? element.title.slice(0, 45) : "Not available"} description={element.description ? element.description.slice(0, 88) : "Not available"} imageUrl={!element.urlToImage ? "https://thumbs.dreamstime.com/b/news-newspapers-folded-stacked-word-wooden-block-puzzle-dice-concept-newspaper-media-press-release-42301371.jpg" : element.urlToImage} newsUrl={element.url} author={element.author} date={element.publishedAt} />
+                                        return <div className="col-md-4" key={Math.random()}>
+                                            <NewsItem title={element.title ? element.title.slice(0, 45) : "Not available"} description={element.description ? element.description.slice(0, 88) : "Not available"} imageUrl={!element.urlToImage ? this.defaultImage : element.urlToImage} newsUrl={element.url} author={element.author} date={element.publishedAt} newsSource={element.source.name} />
                                         </div>
                                     })
                                 }
